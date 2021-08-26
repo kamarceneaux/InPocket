@@ -28,9 +28,12 @@ class Home(object):
         self.f2.pack(fill=X)
 
         # Add some items into our top frame (f1)
-        self.logo = ImageTk.PhotoImage(file="InPocket.png")
-        self.logo_lbl = Label(self.f1, image=self.logo, bg="white")
-        self.logo_lbl.place(x=50, y=25)
+        ## Opens image
+        self.logo = Image.open("InPocketTransparent.png")
+        self.resized_logo = self.logo.resize((130, 130), Image.ANTIALIAS)
+        self.new_logo = ImageTk.PhotoImage(self.resized_logo)
+        self.logo_lbl = Label(master, image=self.new_logo)
+        self.logo_lbl.place(x=50, y=5)
 
 
 # Runs the home page
