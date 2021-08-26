@@ -25,7 +25,7 @@ class Home(object):
         self.sep = ttk.Separator(master, orient="horizontal")
         self.sep.pack(fill=X)
 
-        self.f2 = Frame(master)
+        self.f2 = Frame(master, height=0.6 * 500)
         self.f2.pack(fill=X)
 
         # Add some items into our top frame (f1)
@@ -44,6 +44,31 @@ class Home(object):
             fg=information["titleText"],
         )
         self.title.place(x=190, y=50)
+
+        # Buttons
+        ## Login
+        self.loginButton = Button(
+            master=self.f2,
+            text="    Login    ",  # 4 spaces on each side
+            font="Arial 12",
+            # command = self.loginScreenOpen,
+            fg=information["titleText"],
+            bd=5,
+            width=25,
+        )
+        self.loginButton.place(x=195, y=75)
+
+        ## Register
+        self.loginButton = Button(
+            master=self.f2,
+            text="   Register   ",  # 3 spaces on each side
+            font="Arial 12",
+            # command = self.RegisterScreenOpen,
+            fg=information["titleText"],
+            bd=4,
+            width=25,
+        )
+        self.loginButton.place(x=195, y=145)
 
 
 # Runs the home page
