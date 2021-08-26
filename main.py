@@ -1,4 +1,5 @@
 import tkinter
+from tkinter import font
 from windows import set_dpi_awareness
 from tkinter import *
 from tkinter import ttk
@@ -6,6 +7,8 @@ from PIL import ImageTk, Image
 from utlities import information
 
 set_dpi_awareness()
+
+TEXT_COLOR = information["titleText"]
 
 
 class Home(object):
@@ -45,30 +48,62 @@ class Home(object):
         )
         self.title.place(x=190, y=50)
 
-        # Buttons
-        ## Login
-        self.loginButton = Button(
-            master=self.f2,
-            text="    Login    ",  # 4 spaces on each side
-            font="Arial 12",
-            # command = self.loginScreenOpen,
-            fg=information["titleText"],
-            bd=5,
-            width=25,
+        # Entry Fields
+        ## Username section
+        self.lbl_username = Label(
+            self.f2,
+            text="Username: ",
+            font="Arial 15 bold",
+            fg=TEXT_COLOR,
         )
-        self.loginButton.place(x=195, y=75)
+        self.lbl_username.place(x=125, y=50)
+        self.entryUsername = Entry(self.f2, width=30, bd=4)
+        self.entryUsername.insert(0, "Enter your username here.")
+        self.entryUsername.place(x=290 - 25, y=55)
+        self.entryUsername.focus()
 
-        ## Register
-        self.loginButton = Button(
-            master=self.f2,
-            text="   Register   ",  # 3 spaces on each side
-            font="Arial 12",
-            # command = self.RegisterScreenOpen,
-            fg=information["titleText"],
-            bd=4,
-            width=25,
+        ## Password Section
+        self.lbl_password = Label(
+            self.f2, text="Password: ", font="Arial 15 bold", fg=TEXT_COLOR
         )
-        self.loginButton.place(x=195, y=145)
+        self.lbl_password.place(x=125, y=100)
+        self.entryPassword = Entry(self.f2, width=30, bd=4, show="*")
+        self.entryPassword.place(x=290 - 25, y=105)
+
+        # Submit Button
+        submit = Button(
+            self.f2,
+            text="Submit",
+            font="Arial 13 bold",
+            command=self.printPassword,
+            bd=4,
+            width=15,
+        )  # for now command will be to print password
+        submit.place(x=220, y=155)
+
+        # Create a account button/menus (f3)
+        # Create a account label
+        self.newAccountLbl = Label(
+            self.f2, text="Don't have a account?", font="Arial 11 bold", fg=TEXT_COLOR
+        )
+        self.newAccountLbl.place(x=80, y=227)
+
+        # New account button
+        registerBtn = Button(
+            self.f2,
+            text="Register",
+            width=20,
+            bd=4,
+            font="Arial 11 bold",
+            command=self.register,
+        )
+        registerBtn.place(x=295, y=218)
+
+    def printPassword(self):
+        print(self.entryPassword.get())
+
+    def register(self):
+        print("Registering account...")
 
 
 # Runs the home page
