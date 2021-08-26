@@ -3,10 +3,9 @@ from windows import set_dpi_awareness
 from tkinter import *
 from tkinter import ttk
 from PIL import ImageTk, Image
+from utlities import information
 
 set_dpi_awareness()
-
-DEFAULT_TEXT_COLOR = "#355040"
 
 
 class Home(object):
@@ -20,7 +19,7 @@ class Home(object):
         # master.grid_columnconfigure(0, weight=1)
 
         # Create our frame(s)
-        self.f1 = Frame(master, height=0.3 * 500)
+        self.f1 = Frame(master, height=information["thirdOfFrame"])
         self.f1.pack(fill=X)
 
         self.sep = ttk.Separator(master, orient="horizontal")
@@ -42,7 +41,7 @@ class Home(object):
             master,
             text="In Pocket -- Money Manager",
             font="Arial 20",
-            fg=DEFAULT_TEXT_COLOR,
+            fg=information["titleText"],
         )
         self.title.place(x=190, y=50)
 
