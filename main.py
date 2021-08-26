@@ -1,2 +1,47 @@
+import tkinter
 from windows import set_dpi_awareness
 from tkinter import *
+from tkinter import ttk
+from PIL import ImageTk, Image
+
+set_dpi_awareness()
+
+
+class Home(object):
+    """Equal to the Main screen."""
+
+    def __init__(self, master):
+        """Master is equal to root here"""
+        self.master = master
+
+        # master.grid_rowconfigure(1, weight=1)
+        # master.grid_columnconfigure(0, weight=1)
+
+        # Create our frame(s)
+        self.f1 = Frame(master, height=0.3 * 500)
+        self.f1.pack(fill=X)
+
+        self.sep = ttk.Separator(master, orient="horizontal")
+        self.sep.pack(fill=X)
+
+        self.f2 = Frame(master)
+        self.f2.pack(fill=X)
+
+        # Add some items into our top frame (f1)
+        self.logo = ImageTk.PhotoImage(file="InPocket.png")
+        self.logo_lbl = Label(self.f1, image=self.logo, bg="white")
+        self.logo_lbl.place(x=50, y=25)
+
+
+# Runs the home page
+def main():
+    root = Tk()
+    app = Home(root)
+    root.title("InPocket -- Money Manager")
+    root.geometry("650x550+400+100")
+    root.resizable(False, False)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
