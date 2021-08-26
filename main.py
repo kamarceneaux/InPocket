@@ -6,6 +6,8 @@ from PIL import ImageTk, Image
 
 set_dpi_awareness()
 
+DEFAULT_TEXT_COLOR = "#355040"
+
 
 class Home(object):
     """Equal to the Main screen."""
@@ -34,6 +36,15 @@ class Home(object):
         self.new_logo = ImageTk.PhotoImage(self.resized_logo)
         self.logo_lbl = Label(master, image=self.new_logo)
         self.logo_lbl.place(x=50, y=5)
+
+        ## Title section
+        self.title = Label(
+            master,
+            text="In Pocket -- Money Manager",
+            font="Arial 20",
+            fg=DEFAULT_TEXT_COLOR,
+        )
+        self.title.place(x=190, y=50)
 
 
 # Runs the home page
