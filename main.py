@@ -5,6 +5,7 @@ from tkinter import *
 from tkinter import ttk
 from PIL import ImageTk, Image
 from utlities import information
+from register import Register
 
 set_dpi_awareness()
 
@@ -104,6 +105,7 @@ class Home(object):
 
     def register(self):
         print("Registering account...")
+        registration = Register()
 
 
 # Runs the home page
