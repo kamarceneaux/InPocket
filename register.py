@@ -14,6 +14,7 @@ class Register(Toplevel):
         self.geometry("650x550+600+250")
         self.resizable(False, False)
         self.iconbitmap("iconInPocket.ico")
+        self.profilesRegistered = []
 
         # Create our frame(s)
         self.f1 = Frame(self, height=information["thirdOfFrame"])
@@ -60,7 +61,7 @@ class Register(Toplevel):
         )
         self.password = Entry(self.f2, width=25, bd=4)
         self.balanceLbl = Label(
-            self.f2, text="Balance: ", fg=TEXT_COLOR, font="Arial 16 bold"
+            self.f2, text="Balance:    $", fg=TEXT_COLOR, font="Arial 16 bold"
         )
         self.balance = Entry(self.f2, width=25, bd=4)
 
@@ -68,7 +69,7 @@ class Register(Toplevel):
         self.firstNamelbl.place(x=140, y=30)
         self.firstName.place(x=310, y=32)
 
-        ##Row 2
+        ## Row 2
         self.usernamelbl.place(x=140, y=70)
         self.username.place(x=310, y=72)
 
@@ -76,9 +77,32 @@ class Register(Toplevel):
         self.passwordLbl.place(x=140, y=110)
         self.password.place(x=310, y=112)
 
-        ##Row 4
+        ## Row 4
         self.balanceLbl.place(x=140, y=150)
         self.balance.place(x=310, y=152)
+
+        ## Submit Button Row
+        submit = Button(
+            self.f2,
+            text="Submit",
+            width=14,
+            bd=4,
+            font="Arial 16 bold",
+            command=self.completeRegistration,
+        )
+        submit.place(x=210, y=215)
+
+    def completeRegistration(self):
+        """Submit and completely register a user, if all the fields are met"""
+        first_name = self.firstName.get()
+        username = self.username.get()
+        # Balance section (will need to convert integers correctly)
+        password = self.password.get()
+
+        users_information = [first_name, username, password]
+        self.profilesRegistered.append(users_information)
+
+        print(self.profilesRegistered)
 
     def uploadInformation(self):
         pass
