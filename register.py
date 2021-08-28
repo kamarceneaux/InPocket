@@ -1,13 +1,84 @@
 from tkinter import *
+from tkinter import ttk
+from PIL import ImageTk, Image
 from utlities import information
 import json
+
+TEXT_COLOR = information["titleText"]
 
 
 class Register(Toplevel):
     def __init__(self):
         Toplevel.__init__(self)
-        self.title("InPocket -- Money Manager")
+        self.title("Register")
         self.geometry("650x550+600+250")
         self.resizable(False, False)
         self.iconbitmap("iconInPocket.ico")
-        self.mainloop()
+
+        # Create our frame(s)
+        self.f1 = Frame(self, height=information["thirdOfFrame"])
+        self.f1.pack(fill=X)
+
+        self.sep = ttk.Separator(self, orient="horizontal")
+        self.sep.pack(fill=X)
+
+        self.f2 = Frame(self, height=0.6 * 500)
+        self.f2.pack(fill=X)
+
+        self.f1.grid_columnconfigure(0, weight=1)
+        self.f2.grid_rowconfigure(0, weight=1)
+
+        # Add some items into our top frame (f1)
+        ## Opens image
+        self.logo = Image.open("InPocketTransparent.png")
+        self.resized_logo = self.logo.resize((130, 130), Image.ANTIALIAS)
+        self.new_logo = ImageTk.PhotoImage(self.resized_logo)
+        self.logo_lbl = Label(self, image=self.new_logo)
+        self.logo_lbl.place(x=50, y=5)
+
+        ## Title section
+        self.title = Label(
+            self,
+            text="In Pocket -- Money Manager",
+            font="Arial 20",
+            fg=information["titleText"],
+        )
+        self.title.place(x=190, y=50)
+
+        # Frame 2
+        ## Inputs
+        self.firstNamelbl = Label(
+            self.f2, text="First Name: ", fg=TEXT_COLOR, font="Arial 16 bold"
+        )
+        self.firstName = Entry(self.f2, width=25, bd=4)
+        self.usernamelbl = Label(
+            self.f2, text="Username: ", fg=TEXT_COLOR, font="Arial 16 bold"
+        )
+        self.username = Entry(self.f2, width=25, bd=4)
+        self.passwordLbl = Label(
+            self.f2, text="Password: ", fg=TEXT_COLOR, font="Arial 16 bold"
+        )
+        self.password = Entry(self.f2, width=25, bd=4)
+        self.balanceLbl = Label(
+            self.f2, text="Balance: ", fg=TEXT_COLOR, font="Arial 16 bold"
+        )
+        self.balance = Entry(self.f2, width=25, bd=4)
+
+        ## Row 1
+        self.firstNamelbl.place(x=140, y=30)
+        self.firstName.place(x=310, y=32)
+
+        ##Row 2
+        self.usernamelbl.place(x=140, y=70)
+        self.username.place(x=310, y=72)
+
+        ## Row 3
+        self.passwordLbl.place(x=140, y=110)
+        self.password.place(x=310, y=112)
+
+        ##Row 4
+        self.balanceLbl.place(x=140, y=150)
+        self.balance.place(x=310, y=152)
+
+    def uploadInformation(self):
+        pass

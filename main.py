@@ -1,8 +1,7 @@
 import tkinter
 from tkinter import font
 from windows import set_dpi_awareness
-from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, Frame, Label, Entry, Tk, Button, X
 from PIL import ImageTk, Image
 from utlities import information
 from register import Register
