@@ -9,4 +9,5 @@ class Register(Toplevel):
         self.title("InPocket -- Money Manager")
         self.geometry("650x550+600+250")
         self.resizable(False, False)
+        self.iconbitmap("iconInPocket.ico")
         self.mainloop()

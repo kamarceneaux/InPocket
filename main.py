@@ -59,7 +59,6 @@ class Home(object):
         )
         self.lbl_username.place(x=125, y=50)
         self.entryUsername = Entry(self.f2, width=30, bd=4)
-        self.entryUsername.insert(0, "Enter your username here.")
         self.entryUsername.place(x=290 - 25, y=55)
         self.entryUsername.focus()
 
@@ -115,6 +114,7 @@ def main():
     root.title("InPocket -- Money Manager")
     root.geometry("650x550+400+100")
     root.resizable(False, False)
+    root.iconbitmap("iconInPocket.ico")
     root.mainloop()
 
 
