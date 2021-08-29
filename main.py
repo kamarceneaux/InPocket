@@ -166,7 +166,8 @@ class Home(object):
                         )
 
                         self.open_homepage()
-                        self.destroy_page = True
+                        self.entryUsername.delete(0, "end")
+                        self.entryPassword.delete(0, "end")
 
                     else:
                         messagebox.showerror(

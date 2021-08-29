@@ -99,14 +99,14 @@ class Register(Toplevel):
         balance = self.balance.get()
         if first_name and username and password and balance != "":
             try:
-                if balance != ".":
-                    balance += ".00"
-
-                    balance = float(balance)
-
+                balance_split = balance.split(".")
+                nondecimal = balance_split[0]
+                if len(balance_split) > 1:
+                    decimal = balance_split[1]
+                    full_string = f"{nondecimal}.{decimal}"
+                    complete_balance = round(float(full_string), 2)
                 else:
-                    balance1 = float(balance)
-                    balance = round(balance1, 2)
+                    complete_balance = int(nondecimal)
 
                 try:
                     with open("registered_users.json") as file:
@@ -115,7 +115,7 @@ class Register(Toplevel):
                     users_data["first_name"].append(first_name)
                     users_data["username"].append(username)
                     users_data["password"].append(password)
-                    users_data["balance"].append(balance)
+                    users_data["balance"].append(complete_balance)
 
                     with open("registered_users.json", "w") as file:
                         json.dump(users_data, file, indent=4)
