@@ -1,5 +1,4 @@
-from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox, Toplevel, Frame, X, Label, Entry, Button
 from PIL import ImageTk, Image
 from utlities import information
 import json
@@ -93,16 +92,69 @@ class Register(Toplevel):
         submit.place(x=210, y=215)
 
     def completeRegistration(self):
-        """Submit and completely register a user, if all the fields are met"""
+        """Submit and completely register a user, if all the fields are met."""
         first_name = self.firstName.get()
         username = self.username.get()
-        # Balance section (will need to convert integers correctly)
         password = self.password.get()
+        balance = self.balance.get()
+        if first_name and username and password and balance != "":
+            try:
+                if balance != ".":
+                    balance += ".00"
 
-        users_information = [first_name, username, password]
-        self.profilesRegistered.append(users_information)
+                    balance = float(balance)
 
-        print(self.profilesRegistered)
+                else:
+                    balance1 = float(balance)
+                    balance = round(balance1, 2)
+
+                try:
+                    with open("registered_users.json") as file:
+                        users_data = json.load(file)
+
+                    users_data["first_name"].append(first_name)
+                    users_data["username"].append(username)
+                    users_data["password"].append(password)
+                    users_data["balance"].append(balance)
+
+                    with open("registered_users.json", "w") as file:
+                        json.dump(users_data, file, indent=4)
+
+                    messagebox.showinfo(
+                        title="Success",
+                        message=f"{first_name}, your account was succesfully created! This window will now close.",
+                        icon="info",
+                    )
+
+                    self.destroy()
+
+                except FileNotFoundError:
+                    users = {}
+                    users["first_name"] = [first_name]
+                    users["username"] = [username]
+                    users["password"] = [password]
+                    users["balance"] = [balance]
+                    with open("registered_users.json", "w") as file:
+                        json.dump(users, file, indent=4)
+
+                    messagebox.showinfo(
+                        title="Success",
+                        message=f"{first_name}, your account was succesfully created! This window will now close.",
+                        icon="info",
+                    )
+
+                    self.destroy()
+
+            except ValueError:
+                messagebox.showerror(
+                    title="Error",
+                    message="'Balance' only takes numerical values. Do not enter any symbols or other characters (this includes the dollar sign ($). You can include the decimal point if it is properly placed.",
+                    icon="warning",
+                )
+        else:
+            messagebox.showerror(
+                title="Error", message="Fields cannot be empty.", icon="warning"
+            )
 
     def uploadInformation(self):
         pass
