@@ -111,22 +111,32 @@ class Register(Toplevel):
                 try:
                     with open("registered_users.json") as file:
                         users_data = json.load(file)
+                        usernames_in_list = users_data["username"]
 
-                    users_data["first_name"].append(first_name)
-                    users_data["username"].append(username)
-                    users_data["password"].append(password)
-                    users_data["balance"].append(complete_balance)
+                    if username in usernames_in_list:
 
-                    with open("registered_users.json", "w") as file:
-                        json.dump(users_data, file, indent=4)
+                        self.username.delete(0, "end")
 
-                    messagebox.showinfo(
-                        title="Success",
-                        message=f"{first_name}, your account was succesfully created! This window will now close.",
-                        icon="info",
-                    )
+                        messagebox.showerror(
+                            title="Error involving registration",
+                            message=f"The username '{username}', already exists. Please select a new one.",
+                        )
+                    else:
+                        users_data["first_name"].append(first_name.title())
+                        users_data["username"].append(username)
+                        users_data["password"].append(password)
+                        users_data["balance"].append(complete_balance)
 
-                    self.destroy()
+                        with open("registered_users.json", "w") as file:
+                            json.dump(users_data, file, indent=4)
+
+                        messagebox.showinfo(
+                            title="Success",
+                            message=f"{first_name}, your account was succesfully created! This window will now close.",
+                            icon="info",
+                        )
+
+                        self.destroy()
 
                 except FileNotFoundError:
                     users = {}
