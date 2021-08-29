@@ -1,10 +1,11 @@
-import tkinter
+from home import HomePage
 from tkinter import font
 from windows import set_dpi_awareness
-from tkinter import ttk, Frame, Label, Entry, Tk, Button, X
+from tkinter import ttk, Frame, Label, Entry, Tk, Button, X, messagebox
 from PIL import ImageTk, Image
 from utlities import information
 from register import Register
+import json
 
 set_dpi_awareness()
 
@@ -17,6 +18,7 @@ class Home(object):
     def __init__(self, master):
         """Master is equal to root here"""
         self.master = master
+        self.destroy_page = False
 
         # master.grid_rowconfigure(1, weight=1)
         # master.grid_columnconfigure(0, weight=1)
@@ -74,7 +76,7 @@ class Home(object):
             self.f2,
             text="Submit",
             font="Arial 13 bold",
-            command=self.printPassword,
+            command=self.verify_access,
             bd=4,
             width=15,
         )  # for now command will be to print password
@@ -102,8 +104,101 @@ class Home(object):
         print(self.entryPassword.get())
 
     def register(self):
-        print("Registering account...")
         registration = Register()
+
+    def open_homepage(self):
+        homepage = HomePage()
+
+    def verify_access(self):
+        """Takes the users inputted password and makes sure it's credentials are right for access into their account"""
+
+        """
+        #1) Make sure a users fields isn't empty
+            #3) Save the data to variables
+            #4) try loading the data in
+                #6) cycle throught username column and find index where users username is equal to the username found in the json
+                #7) if username is found
+                    #10) return index
+                    #11) Make sure the password is correct
+                        #12) If password is correct launch next screen
+                        #15) Dump correct information into a user accessed file
+                    #13) If password doesn't match username
+                        #14) launch error message
+                #8) if user is not found
+                    #9) error message
+            #5) except: error box saying no data could be found
+        #2) If empty: prompt error message
+        """
+
+        typed_username = self.entryUsername.get()
+        typed_password = self.entryPassword.get()
+
+        if typed_username and typed_password != "":
+            try:
+                with open("registered_users.json") as file:
+                    users_data = json.load(file)
+                list_of_usernames = users_data["username"]
+                list_of_passwords = users_data["password"]
+                list_of_balances = users_data["balance"]
+                list_of_firstname = users_data["first_name"]
+
+                try:
+                    index_of_items = list_of_usernames.index(typed_username)
+                    set_password = list_of_passwords[index_of_items]
+
+                    if typed_password == set_password:
+                        accessed_information = []
+
+                        accessed_information.append(list_of_firstname[index_of_items])
+                        accessed_information.append(list_of_usernames[index_of_items])
+                        accessed_information.append(set_password)
+                        accessed_information.append(list_of_balances[index_of_items])
+
+                        print(accessed_information)
+
+                        with open("accessed_user.json", "w") as file:
+                            json.dump(accessed_information, file)
+
+                        messagebox.showinfo(
+                            title="Success",
+                            message=f"Welcome {list_of_firstname[index_of_items]}! You are now being logged in! This window will now close. ",
+                            icon="info",
+                        )
+
+                        self.open_homepage()
+                        self.destroy_page = True
+
+                    else:
+                        messagebox.showerror(
+                            title="Invalid Credentials",
+                            message="One or both fields is incorrect. Please try again.",
+                            icon="warning",
+                        )
+                        self.entryUsername.delete(0, "end")
+                        self.entryPassword.delete(0, "end")
+                        self.entryUsername.focus()
+
+                except ValueError:
+                    messagebox.showerror(
+                        title="Invalid Credentials",
+                        message="One or both fields is incorrect. Please try again.",
+                        icon="warning",
+                    )
+                    self.entryUsername.delete(0, "end")
+                    self.entryPassword.delete(0, "end")
+                    self.entryUsername.focus()
+
+            except FileNotFoundError:
+                messagebox.showerror(
+                    title="Error",
+                    message="There is no account's registered. Make sure you've registered and SUBMITED a account. NOTE: Account's are not able to be transferred between computers at this time.",
+                )
+        else:
+            messagebox.showerror(
+                title="Error While Authenticating",
+                message="Text fields cannot be empty!",
+                icon="warning",
+            )
 
 
 # Runs the home page
