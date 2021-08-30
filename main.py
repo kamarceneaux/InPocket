@@ -154,8 +154,6 @@ class Home(object):
                         accessed_information.append(set_password)
                         accessed_information.append(list_of_balances[index_of_items])
 
-                        print(accessed_information)
-
                         with open("accessed_user.json", "w") as file:
                             json.dump(accessed_information, file)
 
