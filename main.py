@@ -30,7 +30,7 @@ class Home(object):
         self.sep = ttk.Separator(master, orient="horizontal")
         self.sep.pack(fill=X)
 
-        self.f2 = Frame(master, height=0.6 * 500)
+        self.f2 = Frame(master, height=0.6 * 550)
         self.f2.pack(fill=X)
 
         # Add some items into our top frame (f1)
