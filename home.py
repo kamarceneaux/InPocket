@@ -5,6 +5,8 @@ from windows import set_dpi_awareness
 from PIL import ImageTk, Image
 import json
 
+set_dpi_awareness()
+
 
 class HomePage(Toplevel):
     def __init__(self):
