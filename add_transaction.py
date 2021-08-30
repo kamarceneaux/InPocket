@@ -2,9 +2,10 @@ from tkinter import Toplevel, ttk, Frame, Label
 import json
 from tkinter.constants import X
 from PIL import Image, ImageTk
+import sqlite3
 
-# Imports to add
-# SQLite, Pillow
+con = sqlite3.connect("InPocket-Database.db")
+cur = con.cursor()
 
 
 class AddTransaction(Toplevel):
