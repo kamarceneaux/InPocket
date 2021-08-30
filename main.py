@@ -35,7 +35,7 @@ class Home(object):
 
         # Add some items into our top frame (f1)
         ## Opens image
-        self.logo = Image.open("InPocketTransparent.png")
+        self.logo = Image.open("images/InPocketTransparent.png")
         self.resized_logo = self.logo.resize((130, 130), Image.ANTIALIAS)
         self.new_logo = ImageTk.PhotoImage(self.resized_logo)
         self.logo_lbl = Label(master, image=self.new_logo)
@@ -207,7 +207,7 @@ def main():
     root.title("InPocket -- Money Manager")
     root.geometry("650x550+400+100")
     root.resizable(False, False)
-    root.iconbitmap("iconInPocket.ico")
+    root.iconbitmap("images/iconInPocket.ico")
     root.mainloop()
 
 

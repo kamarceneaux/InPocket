@@ -30,7 +30,7 @@ class Register(Toplevel):
 
         # Add some items into our top frame (f1)
         ## Opens image
-        self.logo = Image.open("InPocketTransparent.png")
+        self.logo = Image.open("images/InPocketTransparent.png")
         self.resized_logo = self.logo.resize((130, 130), Image.ANTIALIAS)
         self.new_logo = ImageTk.PhotoImage(self.resized_logo)
         self.logo_lbl = Label(self, image=self.new_logo)
