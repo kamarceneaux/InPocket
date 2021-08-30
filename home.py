@@ -1,9 +1,10 @@
 from tkinter import Button, Toplevel, font, ttk, Label, Frame
 from tkinter.constants import X
-from utlities import FONTTEXTCOLOR
+from utlities import FONTTEXTCOLOR, random_money_quotes
 from windows import set_dpi_awareness
 from PIL import ImageTk, Image
 import json
+import random
 
 set_dpi_awareness()
 
@@ -27,13 +28,13 @@ class HomePage(Toplevel):
         self.sep = ttk.Separator(self, orient="horizontal")
         self.sep.pack(fill=X)
 
-        self.f2 = Frame(self, height=0.50 * 550)
+        self.f2 = Frame(self, height=0.55 * 550)
         self.f2.pack(fill=X)
 
         self.sep2 = ttk.Separator(self, orient="horizontal")
         self.sep2.pack(fill=X)
 
-        self.f3 = Frame(self, height=0.25 * 550)
+        self.f3 = Frame(self, height=0.20 * 550)
         self.f3.pack(fill=X)
 
         # Heading Frame
@@ -75,4 +76,8 @@ class HomePage(Toplevel):
         view_transactions.place(x=150, y=160)
         # Frame 3
         ## Load in quotes
+        money_quotes = random_money_quotes
+        display_quote = random.choice(money_quotes)
         ## Then show a RANDOM quote to display
+        self.showQuote = Label(self.f3, text=display_quote, font="Arial 8 underline")
+        self.showQuote.pack(side="bottom")
