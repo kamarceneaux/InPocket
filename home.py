@@ -5,6 +5,7 @@ from windows import set_dpi_awareness
 from PIL import ImageTk, Image
 import json
 import random
+from add_transaction import AddTransaction
 
 set_dpi_awareness()
 
@@ -66,7 +67,12 @@ class HomePage(Toplevel):
         # Frame 2
         ## Add Transaction Button (button will launch new window, and terminate this window)
         add_transaction = Button(
-            self.f2, text="Add Transaction", width=20, bd=4, font="Arial 16 bold"
+            self.f2,
+            text="Add Transaction",
+            width=20,
+            bd=4,
+            font="Arial 16 bold",
+            command=self.add_transaction,
         )
         add_transaction.place(x=150, y=80)
         ## View past transactions button (read add transaction button)
@@ -81,3 +87,6 @@ class HomePage(Toplevel):
         ## Then show a RANDOM quote to display
         self.showQuote = Label(self.f3, text=display_quote, font="Arial 8 underline")
         self.showQuote.pack(side="bottom")
+
+    def add_transaction(self):
+        addTransactionPage = AddTransaction()
