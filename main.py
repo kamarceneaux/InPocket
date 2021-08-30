@@ -159,7 +159,7 @@ class Home(object):
 
                         messagebox.showinfo(
                             title="Success",
-                            message=f"Welcome {list_of_firstname[index_of_items]}! You are now being logged in! This window will now close. ",
+                            message=f"Welcome {list_of_firstname[index_of_items]}! You are now being logged in!",
                             icon="info",
                         )
 
