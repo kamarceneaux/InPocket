@@ -90,3 +90,6 @@ class HomePage(Toplevel):
 
     def add_transaction(self):
         addTransactionPage = AddTransaction()
+        # Eventually kill the homepage
+        self.destroy()
+        addTransactionPage.lift()
