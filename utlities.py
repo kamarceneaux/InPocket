@@ -19,4 +19,14 @@ random_money_quotes = [
     "The price of anything is the amount of life you exchange for it. – Henry David Thoreau",
 ]
 
-type_of_trans = ("Income", "Expense")
+exp_income = ("Income", "Expense")
+type_of_trans = (
+    "Retail",
+    "Food",
+    "Transport",
+    "Gift",
+    "Medical",
+    "School",
+    "Work",
+    "Other",
+)

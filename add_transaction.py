@@ -1,11 +1,11 @@
-from tkinter import Tk, Toplevel, ttk, Frame, Label
+from tkinter import Entry, Tk, Toplevel, ttk, Frame, Label
 import json
 import tkinter
 from tkinter.constants import X
 from PIL import Image, ImageTk
 import sqlite3
 from windows import set_dpi_awareness
-from utlities import type_of_trans, FONTTEXTCOLOR
+from utlities import *
 
 set_dpi_awareness()
 
@@ -52,18 +52,53 @@ class AddTransaction(Toplevel):
 
         # Frame 2
         ## Empty Variables
+        self.expense_or_income = tkinter.StringVar()
         self.trans_type = tkinter.StringVar()
 
         ## User Input Section
-        ### Type of transaction (DROPDOWN)
-        self.typeTransLbl = Label(
-            self.f2, text="Transaction Type:", fg=FONTTEXTCOLOR, font="Arial 11 bold"
+        ### Expense/Income (DROPDOWN)
+        self.expInc = Label(
+            self.f2, text="Expense/Income:", fg=FONTTEXTCOLOR, font="Arial 11 bold"
         )
-        self.typeTransLbl.place(x=13, y=25)
-        self.typeOfTransaction = ttk.Combobox(
+        self.expInc.place(x=2, y=25)
+        self.answerExpInc = ttk.Combobox(
+            self.f2,
+            values=exp_income,
+            state="readonly",
+            textvariable=self.expense_or_income,
+        )
+        self.answerExpInc.focus()
+        self.answerExpInc.place(x=180, y=27)
+
+        ### Type of trans
+        self.type_of_transaction = Label(
+            self.f2,
+            text="Type of transaction: ",
+            fg=FONTTEXTCOLOR,
+            font="Arial 11 bold",
+        )
+        self.type_of_transaction.place(x=1, y=85)
+        self.typeOfTransResponse = ttk.Combobox(
             self.f2,
             values=type_of_trans,
             state="readonly",
             textvariable=self.trans_type,
         )
-        self.typeOfTransaction.place(x=180, y=27)
+        self.typeOfTransResponse.place(x=190, y=87)
+
+        ### Description
+        self.descriptionLbl = Label(
+            self.f2, text="Description: ", fg=FONTTEXTCOLOR, font="Arial 11 bold"
+        )
+        self.descriptionLbl.place(x=2, y=145)
+        self.description = Entry(self.f2, width=28, bd=4)
+        self.description.place(x=117, y=147)
+
+        ### Dollar entry
+        self.dollarLbl = Label(
+            self.f2, text="$", fg=FONTTEXTCOLOR, font="Arial 11 bold"
+        )
+        self.dollarLbl.place(x=2, y=205)
+        self.dollarEntry = Entry(self.f2, width=6, bd=4)
+        self.dollarEntry.insert(0, "00")
+        self.dollarEntry.place(x=20, y=207)
