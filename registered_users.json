@@ -1,14 +1,18 @@
 {
     "first_name": [
+        "Kameron",
         "Kameron"
     ],
     "username": [
-        "koolkidkam"
+        "koolkidkam",
+        "w"
     ],
     "password": [
-        "Kameron"
+        "Kameron",
+        "w"
     ],
     "balance": [
-        "112.23"
+        "112.23",
+        2192.21
     ]
 }
