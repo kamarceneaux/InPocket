@@ -6,8 +6,12 @@ from windows import set_dpi_awareness
 from PIL import ImageTk, Image
 import json
 import random
-from add_transaction import AddTransaction
 import sqlite3
+from datetime import date
+
+con = sqlite3.connect("InPocket-Database.db")
+cur = con.cursor()
+
 
 set_dpi_awareness()
 
@@ -97,10 +101,6 @@ class HomePage(Toplevel):
         addTransactionPage.lift()
 
 
-con = sqlite3.connect("InPocket-Database.db")
-cur = con.cursor()
-
-
 class AddTransaction(Toplevel):
     """Shows the transaction page to add transaction"""
 
@@ -111,6 +111,8 @@ class AddTransaction(Toplevel):
         self.first_name = self.user[0]
         self.username = self.user[1]
         self.balance = float(self.user[3])
+        self.today = date.today()
+
         self.title(f"Add Transaction")
         self.geometry("650x550+400+100")
         self.resizable(False, False)
@@ -154,6 +156,7 @@ class AddTransaction(Toplevel):
             values=exp_income,
             state="readonly",
             textvariable=self.expense_or_income,
+            width=22,
         )
         self.answerExpInc.focus()
         self.answerExpInc.place(x=160, y=27)
@@ -171,8 +174,9 @@ class AddTransaction(Toplevel):
             values=type_of_trans,
             state="readonly",
             textvariable=self.trans_type,
+            width=19,
         )
-        self.typeOfTransResponse.place(x=178, y=87)
+        self.typeOfTransResponse.place(x=185, y=87)
 
         ### Description
         self.descriptionLbl = Label(
@@ -182,35 +186,53 @@ class AddTransaction(Toplevel):
             font="Arial 11 bold",
         )
         self.descriptionLbl.place(x=2, y=145)
-        self.description = Entry(self.f2, width=28, bd=4)
+        self.description = Entry(self.f2, width=30, bd=4)
         self.description.place(x=117, y=147)
 
         ### Dollar entry
         self.dollarLbl = Label(
             self.f2, text="$", fg=FONTTEXTCOLOR, font="Arial 11 bold"
         )
-        self.dollarLbl.place(x=85, y=205)
-        self.dollarEntry = Entry(self.f2, width=6, bd=6)
+        self.dollarLbl.place(x=65, y=205)
+        self.dollarEntry = Entry(self.f2, width=12, bd=6)
         self.dollarEntry.insert(0, "00")
-        self.dollarEntry.place(x=100, y=205)
+        self.dollarEntry.place(x=80, y=205)
 
         ### Cents entry
         self.centLbl = Label(self.f2, text=".", fg=FONTTEXTCOLOR, font="Arial 11 bold")
-        self.centLbl.place(x=163, y=208)
-        self.centEntry = Entry(self.f2, width=6, bd=6)
+        self.centLbl.place(x=195, y=208)
+        self.centEntry = Entry(self.f2, width=8, bd=6)
         self.centEntry.insert(0, "00")
-        self.centEntry.place(x=180, y=205)
+        self.centEntry.place(x=218, y=205)
+
+        ### Months entry
+        self.monthLbl = Label(
+            self.f2, text="MM", fg=FONTTEXTCOLOR, font="Arial 11 bold"
+        )
+        self.monthLbl.place(x=80, y=250)
+        self.monthEntry = Entry(self.f2, width=3, bd=3)
+        self.monthEntry.insert(0, self.today.month)
+        self.monthEntry.place(x=120, y=250)
+
+        ### Day entry
+        self.dayLbl = Label(self.f2, text="DD", fg=FONTTEXTCOLOR, font="Arial 11 bold")
+        self.dayLbl.place(x=145, y=250)
+        self.dayEntry = Entry(self.f2, width=3, bd=3)
+        self.dayEntry.insert(0, self.today.day)
+        self.dayEntry.place(x=180, y=250)
+
+        ### Year Entry
 
         ### Submit button
         submit = Button(
             self.f2,
             text="Submit",
-            width=12,
-            bd=4,
-            font="Arial 16 bold",
+            width=8,
+            bd=2,
+            font="Arial 11 bold",
             command=self.finalizeSubmission,
         )
-        submit.place(x=80, y=250)
+        submit.place(x=185, y=300)
 
     def finalizeSubmission(self):
         # Entry fields for database
@@ -230,7 +252,19 @@ class AddTransaction(Toplevel):
             # Convert string to numerical
             try:
                 dollarOfficialEntry = int(dollarOfficialEntry)
-                print(dollarOfficialEntry)
+                # Takes the length (incase it's greater than base 10 ^ -2)
+                divide_by = len(centOfficialEntry)
+                # Converts cents to int
+                centOfficialEntry = int(centOfficialEntry)
+                # Divide the cents by the number
+                exponent_raise = 10 ** (1 * divide_by)
+                centOfficialEntry1 = round(centOfficialEntry / exponent_raise, 2)
+                total_balance = dollarOfficialEntry + centOfficialEntry1
+                if typeTrans == "Expense":
+                    total_balance = -(total_balance)
+
+                print(total_balance)
+
             except ValueError:
                 messagebox.showerror(
                     title="Error In Dollar or Cent field",

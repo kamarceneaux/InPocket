@@ -157,12 +157,6 @@ class Home(object):
                         with open("accessed_user.json", "w") as file:
                             json.dump(accessed_information, file)
 
-                        messagebox.showinfo(
-                            title="Success",
-                            message=f"Welcome {list_of_firstname[index_of_items]}! You are now being logged in!",
-                            icon="info",
-                        )
-
                         self.open_homepage()
                         self.entryUsername.delete(0, "end")
                         self.entryPassword.delete(0, "end")
