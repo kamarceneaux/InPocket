@@ -12,7 +12,6 @@ from datetime import date
 con = sqlite3.connect("InPocket-Database.db")
 cur = con.cursor()
 
-
 set_dpi_awareness()
 
 
@@ -193,17 +192,17 @@ class AddTransaction(Toplevel):
         self.dollarLbl = Label(
             self.f2, text="$", fg=FONTTEXTCOLOR, font="Arial 11 bold"
         )
-        self.dollarLbl.place(x=65, y=205)
+        self.dollarLbl.place(x=85, y=195)
         self.dollarEntry = Entry(self.f2, width=12, bd=6)
         self.dollarEntry.insert(0, "00")
-        self.dollarEntry.place(x=80, y=205)
+        self.dollarEntry.place(x=100, y=195)
 
         ### Cents entry
         self.centLbl = Label(self.f2, text=".", fg=FONTTEXTCOLOR, font="Arial 11 bold")
-        self.centLbl.place(x=195, y=208)
+        self.centLbl.place(x=212, y=198)
         self.centEntry = Entry(self.f2, width=8, bd=6)
         self.centEntry.insert(0, "00")
-        self.centEntry.place(x=218, y=205)
+        self.centEntry.place(x=230, y=195)
 
         ### Months entry
         self.monthLbl = Label(
@@ -222,17 +221,24 @@ class AddTransaction(Toplevel):
         self.dayEntry.place(x=180, y=250)
 
         ### Year Entry
+        self.yearLbl = Label(
+            self.f2, text="YYYY", fg=FONTTEXTCOLOR, font="Arial 11 bold"
+        )
+        self.yearLbl.place(x=200, y=250)
+        self.yearEntry = Entry(self.f2, width=6, bd=3)
+        self.yearEntry.insert(0, self.today.year)
+        self.yearEntry.place(x=260, y=250)
 
         ### Submit button
         submit = Button(
             self.f2,
             text="Submit",
-            width=8,
+            width=10,
             bd=2,
             font="Arial 11 bold",
             command=self.finalizeSubmission,
         )
-        submit.place(x=185, y=300)
+        submit.place(x=142, y=300)
 
     def finalizeSubmission(self):
         # Entry fields for database
@@ -241,13 +247,19 @@ class AddTransaction(Toplevel):
         descriptionOfficialEntry = self.description.get()
         dollarOfficialEntry = self.dollarEntry.get()
         centOfficialEntry = self.centEntry.get()
+        monthOfficialEntry = self.monthEntry.get()
+        dayOfficialEntry = self.dayEntry.get()
+        yearOfficialEntry = self.yearEntry.get()
 
         if (
             expen_incon_entry
             and typeTrans
             and descriptionOfficialEntry
             and dollarOfficialEntry
-            and centOfficialEntry != ""
+            and centOfficialEntry
+            and monthOfficialEntry
+            and dayOfficialEntry
+            and yearOfficialEntry != ""
         ):
             # Convert string to numerical
             try:
@@ -260,10 +272,37 @@ class AddTransaction(Toplevel):
                 exponent_raise = 10 ** (1 * divide_by)
                 centOfficialEntry1 = round(centOfficialEntry / exponent_raise, 2)
                 total_balance = dollarOfficialEntry + centOfficialEntry1
-                if typeTrans == "Expense":
-                    total_balance = -(total_balance)
+                if expen_incon_entry == "Expense":
+                    total_balance = total_balance * -1
 
-                print(total_balance)
+                try:
+                    query = """
+                    INSERT INTO 'transactions' (username, statement, transaction_type, description, amount, month, day, year) VALUES (?,?,?,?,?,?,?,?)
+                    """
+                    cur.execute(
+                        query,
+                        (
+                            self.username,
+                            expen_incon_entry,
+                            typeTrans,
+                            descriptionOfficialEntry,
+                            total_balance,
+                            monthOfficialEntry,
+                            dayOfficialEntry,
+                            yearOfficialEntry,
+                        ),
+                    )
+                    con.commit()
+                    messagebox.showinfo(
+                        "Success", "Successfully added to database!", icon="info"
+                    )
+                    self.open_home_page()
+                except:
+                    messagebox.showerror(
+                        title="Error",
+                        message="Can not add to the database!",
+                        icon="warning",
+                    )
 
             except ValueError:
                 messagebox.showerror(
@@ -272,6 +311,7 @@ class AddTransaction(Toplevel):
                     icon="warning",
                 )
                 self.dollarEntry.delete(0, "end")
+                self.centEntry.delete(0, "end")
 
         else:
             # Show a error
@@ -280,3 +320,9 @@ class AddTransaction(Toplevel):
                 message="Text fields cannot be empty!",
                 icon="warning",
             )
+            self.answerExpInc.focus()
+
+    def open_home_page(self):
+        go_back_home = HomePage()
+        self.destroy()
+        go_back_home.lift()
