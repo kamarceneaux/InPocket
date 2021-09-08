@@ -274,6 +274,31 @@ class AddTransaction(Toplevel):
                 total_balance = dollarOfficialEntry + centOfficialEntry1
                 if expen_incon_entry == "Expense":
                     total_balance = total_balance * -1
+                # Calculate the users new balance
+                self.balance = self.balance + total_balance
+                print(self.balance)
+                # Update and load the new balance into the access_user and register_user files
+                self.user[3] = self.balance
+                try:
+                    with open("accessed_user.json", "w") as file:
+                        json.dump(self.user, file)
+
+                    ## Update the information in the registered users
+                    with open("registered_users.json") as file:
+                        users_data = json.load(file)
+                    list_of_usernames = users_data["username"]
+                    list_of_balances = users_data["balance"]
+                    index_of_items = list_of_usernames.index(self.username)
+
+                    # Update the balance
+                    list_of_balances[index_of_items] = self.balance
+                    # Dump the new balance into the update usersdata
+                    with open("registered_users.json", "w") as file:
+                        json.dump(users_data, file, indent=4)
+                except:
+                    messagebox.showerror(
+                        title="Error", message="This is a technical error on our part."
+                    )
 
                 try:
                     query = """
