@@ -12,7 +12,7 @@ class Register(Toplevel):
         self.title("Register")
         self.geometry("650x550+600+250")
         self.resizable(False, False)
-        self.iconbitmap("Images\InPocketTransparent.png")
+        self.iconbitmap("Images\iconInPocket.ico")
         self.profilesRegistered = []
 
         # Create our frame(s)
