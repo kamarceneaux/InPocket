@@ -94,7 +94,7 @@ class Register(Toplevel):
     def completeRegistration(self):
         """Submit and completely register a user, if all the fields are met."""
         first_name = self.firstName.get()
-        username = self.username.get()
+        username = self.username.get().lower()
         password = self.password.get()
         balance = self.balance.get()
         if first_name and username and password and balance != "":

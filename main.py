@@ -130,7 +130,7 @@ class Home(object):
         #2) If empty: prompt error message
         """
 
-        typed_username = self.entryUsername.get()
+        typed_username = self.entryUsername.get().lower()
         typed_password = self.entryPassword.get()
 
         if typed_username and typed_password != "":
