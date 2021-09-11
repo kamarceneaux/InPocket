@@ -250,12 +250,12 @@ class AddTransaction(Toplevel):
         # Entry fields for database
         expen_incon_entry = self.expense_or_income.get()
         typeTrans = self.trans_type.get()
-        descriptionOfficialEntry = self.description.get()
-        dollarOfficialEntry = self.dollarEntry.get()
-        centOfficialEntry = self.centEntry.get()
-        monthOfficialEntry = self.monthEntry.get()
-        dayOfficialEntry = self.dayEntry.get()
-        yearOfficialEntry = self.yearEntry.get()
+        descriptionOfficialEntry = self.description.get().strip()
+        dollarOfficialEntry = self.dollarEntry.get().strip()
+        centOfficialEntry = self.centEntry.get().strip()
+        monthOfficialEntry = self.monthEntry.get().strip()
+        dayOfficialEntry = self.dayEntry.get().strip()
+        yearOfficialEntry = self.yearEntry.get().strip()
 
         if (
             expen_incon_entry

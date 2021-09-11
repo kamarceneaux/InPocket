@@ -1,17 +1,24 @@
+import io
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import json
 import sqlite3
+
+from pandas.io.sql import DatabaseError
 from windows import set_dpi_awareness
 from utlities import FONTTEXTCOLOR
+import pandas as pd
 
 set_dpi_awareness()
 
+con = sqlite3.connect("InPocket-Database.db")
+cur = con.cursor()
+
 """ 
 Goals
-1) setup basic (blank) screen
-2) import in the users data (such as data from using data from database and acc_user)
-3) filter the transactions to the data that equals the current user 
+1) setup basic (blank) screen ✅
+2) import in the users data (such as data from using data from database and acc_user) ✅
+3) filter the transactions to the data that equals the current user ✅
 4) setup the notebook pages
 5) work on the 'Statistics' tab 
     #Make sure we are using the grid layout
@@ -44,7 +51,16 @@ class TransactionData(Toplevel):
         #Return username and current balance for future use
         self.username = self.user[1]
         self.balance = float(self.user[3])
-        self.screenShown()
+        # Load in SQL Database
+        try:
+            query = f"SELECT * FROM transactions WHERE username ='{self.username}'"
+            data = pd.read_sql_query(query, con)
+            print(data)
+            self.screenShown()
+        except DatabaseError:
+            messagebox.showerror("Error Involving Data", message="No information found in the database.")
+            # Show screen with no datafound
+        
         
     def screenShown(self):
         """Showing the actual screen."""
