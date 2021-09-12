@@ -19,8 +19,8 @@ Goals
 1) setup basic (blank) screen ✅
 2) import in the users data (such as data from using data from database and acc_user) ✅
 3) filter the transactions to the data that equals the current user ✅
-4) setup the notebook pages
-5) work on the 'Statistics' tab 
+4) setup the notebook pages ✅
+5) work on the 'Statistics' tab  ✅ 
     #Make sure we are using the grid layout
     6) Add a tab that shows the next percentage increase
         6a) Number showing net percentage increase (r0, c0)
@@ -36,7 +36,7 @@ Goals
         14) Histogram for price range of expenses
         15) Bar Graph for types of transactions
         16) Line graph showing relationship between types of trans and amount distributed
-18) Work on 'Transaction History' tab
+18) Work on 'Transaction History' tab ✅
     19) Show table specifically viewing users information
     20) Add scroll functionality and filter by time submitted.
 
@@ -56,18 +56,37 @@ class TransactionData(Toplevel):
             query = f"SELECT * FROM transactions WHERE username ='{self.username}'"
             data = pd.read_sql_query(query, con)
             print(data)
-            self.screenShown()
+            self.primaryScreen()
         except DatabaseError:
+            self.errorScreen()
             messagebox.showerror("Error Involving Data", message="No information found in the database.")
-            # Show screen with no datafound
         
         
-    def screenShown(self):
+    def primaryScreen(self):
         """Showing the actual screen."""
         self.title(f"{self.user[0]}'s Transaction Sheet")
         self.geometry("650x550+500+150")
         self.resizable(False, False)
         self.iconbitmap("images/iconInPocket.ico")
+        
+        self.primaryNotebook = ttk.Notebook(self)
+        self.primaryNotebook.pack()
+        
+        self.statisticsFrame = Frame(self.primaryNotebook,width=650, height=550)
+        self.statisticsFrame.pack(fill='both', expand=1)
+        
+        self.transactionLog = Frame(self.primaryNotebook, width=650, height=550)
+        self.transactionLog.pack(fill='both', expand=1)
+        
+        self.primaryNotebook.add(self.statisticsFrame, text='Statistics')
+        self.primaryNotebook.add(self.transactionLog, text="Transaction Log")
+        
+    def errorScreen(self):
+        self.title(f"{self.user[0]}'s Transaction Sheet")
+        self.geometry("650x550+500+150")
+        self.resizable(False, False)
+        self.iconbitmap("images/iconInPocket.ico")
+        
     
 
 
