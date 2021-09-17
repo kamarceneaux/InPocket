@@ -1,14 +1,17 @@
 {
     "first_name": [
-        "Leroy"
+        "Johnny"
     ],
     "username": [
-        "joe"
+        "dasani"
     ],
     "password": [
-        "joe"
+        "dasani"
     ],
     "balance": [
-        144.29
+        120.0
+    ],
+    "starting_balance": [
+        "100.00"
     ]
 }

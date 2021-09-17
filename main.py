@@ -141,6 +141,7 @@ class Home(object):
                 list_of_passwords = users_data["password"]
                 list_of_balances = users_data["balance"]
                 list_of_firstname = users_data["first_name"]
+                list_of_startingbalances = users_data['starting_balance']
 
                 try:
                     index_of_items = list_of_usernames.index(typed_username)
@@ -153,6 +154,7 @@ class Home(object):
                         accessed_information.append(list_of_usernames[index_of_items])
                         accessed_information.append(set_password)
                         accessed_information.append(list_of_balances[index_of_items])
+                        accessed_information.append(list_of_startingbalances[index_of_items])
 
                         with open("accessed_user.json", "w") as file:
                             json.dump(accessed_information, file)

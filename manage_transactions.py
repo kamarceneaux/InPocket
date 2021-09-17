@@ -22,7 +22,7 @@ Goals
 4) setup the notebook pages ✅
 5) work on the 'Statistics' tab  ✅ 
     #Make sure we are using the grid layout
-    6) Add a tab that shows the next percentage increase
+    6) Add a tab that shows the net percentage increase
         6a) Number showing net percentage increase (r0, c0)
         6b) Text saying net percentage increase (r0, c1, columnspan = 2)
     7) Show Current balance
@@ -51,6 +51,7 @@ class TransactionData(Toplevel):
         #Return username and current balance for future use
         self.username = self.user[1]
         self.balance = float(self.user[3])
+        self.starting_balance = float(self.user[4])
         # Load in SQL Database
         try:
             query = f"SELECT * FROM transactions WHERE username ='{self.username}'"

@@ -126,6 +126,7 @@ class Register(Toplevel):
                         users_data["username"].append(username)
                         users_data["password"].append(password)
                         users_data["balance"].append(complete_balance)
+                        users_data['starting_balance'].append(complete_balance)
 
                         with open("registered_users.json", "w") as file:
                             json.dump(users_data, file, indent=4)
@@ -144,6 +145,7 @@ class Register(Toplevel):
                     users["username"] = [username]
                     users["password"] = [password]
                     users["balance"] = [balance]
+                    users['starting_balance'] = [balance]
                     with open("registered_users.json", "w") as file:
                         json.dump(users, file, indent=4)
 
