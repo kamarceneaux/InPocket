@@ -54,10 +54,11 @@ class TransactionData(Toplevel):
         # Load in SQL Database
         try:
             query = f"SELECT * FROM transactions WHERE username ='{self.username}'"
-            data = pd.read_sql_query(query, con)
-            print(data)
+            self.data = pd.read_sql_query(query, con)
+            print(self.data)
             self.primaryScreen()
         except DatabaseError:
+            #Means a user can not view the screen
             self.errorScreen()
             messagebox.showerror("Error Involving Data", message="No information found in the database.")
         
@@ -69,6 +70,7 @@ class TransactionData(Toplevel):
         self.resizable(False, False)
         self.iconbitmap("images/iconInPocket.ico")
         
+        #Creates the literal notebook
         self.primaryNotebook = ttk.Notebook(self)
         self.primaryNotebook.pack()
         
