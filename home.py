@@ -55,7 +55,7 @@ class HomePage(Toplevel):
         ## Show current balance
         self.balanceLbl = Label(
             self,
-            text=f"Current Balance: ${self.balance}",
+            text=f"Current Balance: ${round(self.balance,2)}",
             fg=FONTTEXTCOLOR,
             font="Arial 16 bold",
         )
@@ -83,7 +83,12 @@ class HomePage(Toplevel):
         add_transaction.place(x=150, y=80)
         ## View past transactions button (read add transaction button)
         view_transactions = Button(
-            self.f2, text="View Past Transactions", width=20, bd=4, font="Arial 16 bold", command=self.manageTrans
+            self.f2,
+            text="View Past Transactions",
+            width=20,
+            bd=4,
+            font="Arial 16 bold",
+            command=self.manageTrans,
         )
         view_transactions.place(x=150, y=160)
         # Frame 3
@@ -99,9 +104,9 @@ class HomePage(Toplevel):
         # Eventually kill the homepage
         self.destroy()
         addTransactionPage.lift()
-        
+
     def manageTrans(self):
-        view_trans  = TransactionData()
+        view_trans = TransactionData()
         self.destroy()
         view_trans.lift()
 
