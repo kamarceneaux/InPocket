@@ -3,7 +3,8 @@ from tkinter import *
 from tkinter import ttk, messagebox
 import json
 import sqlite3
-
+import numpy as np
+import matplotlib.pyplot as plt
 from pandas.io.sql import DatabaseError
 from windows import set_dpi_awareness
 from utlities import FONTTEXTCOLOR, color
@@ -169,6 +170,155 @@ class TransactionData(Toplevel):
             font="Arial 12",
         )
         self.showCommonTrans.grid(row=4, column=1, pady=10)
+
+        ## Add a seperator
+        self.sep = ttk.Separator(self.statisticsFrame, orient="horizontal")
+        self.sep.grid(row=5, column=0, columnspan=3, sticky="EW")
+
+        # Get Into Showing the Graphs
+        ## Line graph showing the spending and etc
+        self.spendingButton = Button(
+            self.statisticsFrame,
+            text="Spending History Graph",
+            command=self.spending_graph,
+        )
+        self.spendingButton.grid(row=6, column=1, pady=15)
+
+        ## Show distribution of each transaction type
+        self.distTranTypeButton = Button(
+            self.statisticsFrame,
+            text="Pie Chart of Trans Type",
+            command=self.common_typeTrans_graph,
+        )
+        self.distTranTypeButton.grid(row=7, column=1, pady=15, columnspan=1)
+
+        ##Show distribution of each amount for each transaction
+        self.distAmtBtn = Button(
+            self.statisticsFrame,
+            text="Histogram of Money",
+            command=self.range_of_source,
+        )
+        self.distAmtBtn.grid(row=8, column=1, pady=15, columnspan=1)
+
+        ## Revenue and expense
+        self.revenue_expenseBtn = Button(
+            self.statisticsFrame,
+            text="Revenue and Expense",
+            command=self.expense_revenue_graphs,
+        )
+        self.revenue_expenseBtn.grid(row=9, column=1, pady=15)
+
+    def spending_graph(self):
+        only_spending_amounts = list(self.data["amount"])
+        # Showing accurate spending amounts now
+        y_values = [self.starting_balance]
+        new_index = 0
+        for v in only_spending_amounts:
+            new_balance = round(y_values[new_index] + v, 2)
+            y_values.append(new_balance)
+            new_index += 1
+
+        # Creates the x values which marks the occurence of when the balance was spent
+        x_values = [x for x in range(len(y_values))]
+        plt.plot(x_values, y_values)
+        plt.title("Balance Increase/Decrease for Each Transaction")
+        plt.xlabel("Occurence of Transaction")
+        plt.xticks(x_values)
+        plt.ylabel("Balance")
+        plt.show()
+
+    def common_typeTrans_graph(self):
+        # Counts for each type
+        counts_typeTrans = dict(self.data["transaction_type"].value_counts())
+        labels = list(counts_typeTrans.keys())
+        values = list(counts_typeTrans.values())
+        # Convert the values to percentages since it's a sample
+        perc_values = []
+        total_counts_of_labels = sum(values)
+        for v in values:
+            # Converts each value to a percent
+            percentage = round((v / total_counts_of_labels) * 100, 2)
+            # Adds to the percent list
+            perc_values.append(percentage)
+
+        plt.pie(perc_values, labels=labels)
+        plt.legend()
+        plt.show()
+
+    def range_of_source(self):
+        income_columns = self.data["amount"][self.data["amount"] >= 0]
+        expense_columns = self.data["amount"][self.data["amount"] < 0]
+        ticks = [x for x in range(12) if x % 2 == 0]
+        x_ticks = [-100, -75, -50, -25, 0, 25, 50, 75, 100]
+
+        # Shows both columns
+        plt.hist(income_columns, x_ticks)
+        plt.hist(expense_columns, x_ticks)
+        plt.xlabel("Dollar amounts")
+        # plt.xticks(x_ticks)
+        plt.ylabel("Frequency")
+        plt.show()
+
+    def expense_revenue_graphs(self):
+        """Generate a graph showing revenue/expense values per month"""
+        column_selection = self.data[["amount", "month"]]
+        uniq_months = list(column_selection["month"].unique())
+        # Values we will select for the graph
+        bar_graph_values = []
+
+        for month in uniq_months:
+            # Select values in the data frame where the month is equal to the unique months
+            values_in_certain_months = column_selection[
+                column_selection["month"] == month
+            ]
+            # Select the rows in the dataframe
+            # Add certain values to the chart
+            expensePerMonth = []
+            revenuePerMonth = []
+            for index, row in values_in_certain_months.iterrows():
+                value = row["amount"]
+                if value >= 0:
+                    revenuePerMonth.append(value)
+                else:
+                    value = abs(value)
+                    expensePerMonth.append(value)
+
+            # Add up the sums
+            sum_of_expenses = sum(expensePerMonth)
+            sum_of_revenues = sum(revenuePerMonth)
+
+            # Add to the bar graph values
+            # First index equals the month, second one is income/revenue, third is expenses
+            month_to_add = [month, sum_of_revenues, sum_of_expenses]
+        bar_graph_values.append(month_to_add)
+
+        # Select Month values
+        x_months = []
+        y_income = []
+        y_expense = []
+
+        for item in bar_graph_values:
+            x_months.append(item[0])
+            y_income.append(item[1])
+            y_expense.append(item[2])
+
+        print(bar_graph_values)
+
+        # Actual Graphing Now
+        ## Graphing income per a month
+        plt.subplot(2, 1, 1)
+        plt.bar(x_months, y_income, color="green", label="Income")
+        plt.xticks([], [])
+        plt.ylabel("Absolute Value of Income in USD ($)")
+        plt.legend()
+        ## Graphing expenses per a month
+        plt.subplot(2, 1, 2)
+        plt.bar(x_months, y_expense, color="red", label="Expense")
+        plt.xticks(rotation=45, horizontalalignment="right")
+        plt.ylabel("Absolute Value of Expense in USD ($)")
+        plt.legend()
+        # Show the graphs
+        plt.show()
 
     def errorScreen(self):
         self.title(f"{self.user[0]}'s Transaction Sheet")
