@@ -17,6 +17,8 @@ random_money_quotes = [
     "“Never spend your money before you have it.” – Thomas Jefferson",
     "“Saving is the gap between your ego and your income. ― Morgan Housel, The Psychology of Money",
     "The price of anything is the amount of life you exchange for it. – Henry David Thoreau",
+    "Always the first step to save money is to always record your expenses.",
+    "Set savings goals.",
 ]
 
 exp_income = ("Income", "Expense")

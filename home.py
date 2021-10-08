@@ -117,7 +117,13 @@ class HomePage(Toplevel):
         money_quotes = random_money_quotes
         display_quote = random.choice(money_quotes)
         ## Then show a RANDOM quote to display
-        self.showQuote = Label(self.f3, text=display_quote, font="Arial 8 underline")
+        self.showQuote = Label(
+            self.f3,
+            text=display_quote,
+            font="Arial 12",
+            wraplength=650,
+            justify=CENTER,
+        )
         self.showQuote.pack(side="bottom")
 
     def add_transaction(self):
